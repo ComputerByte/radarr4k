@@ -1,13 +1,10 @@
 #!/bin/bash
 echo Hello, input your swizzin username or this will break.
 read varname
-echo Installing mono dependencies
-apt install apt-transport-https dirmngr gnupg ca-certificates curl mediainfo  > /home/$varname/install.log
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF  > /home/$varname/install.log
-echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list  > /home/$varname/install.log
-apt update  > /home/$varname/install.log
-echo installing mono
-apt install mono-devel  > /home/$varname/install.log
+echo Updating mono
+. /etc/swizzin/sources/globals.sh
+. /etc/swizzin/sources/functions/mono
+mono_repo_update > /home/$varname/install.log
 echo Making directories
 mkdir /home/$varname/scripts
 cd /home/$varname/scripts
