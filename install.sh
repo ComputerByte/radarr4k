@@ -1,6 +1,6 @@
 #!/bin/bash
-echo Hello, input your swizzin username or this will break.
-read varname
+. /etc/swizzin/sources/functions/utils
+varname = $(_get_master_username)
 echo Updating mono
 . /etc/swizzin/sources/globals.sh
 . /etc/swizzin/sources/functions/mono
