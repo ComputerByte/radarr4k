@@ -7,7 +7,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BF
 echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list  > /home/$varname/install.log
 apt update  > /home/$varname/install.log
 echo installing mono
-yes | apt install mono-devel  > /home/$varname/install.log
+apt install mono-devel  > /home/$varname/install.log
 echo Making directories
 mkdir /home/$varname/scripts
 cd /home/$varname/scripts
