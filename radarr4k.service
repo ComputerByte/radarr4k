@@ -10,7 +10,7 @@ Group=swizz
 Type=simple
 
 # Change the path to Radarr or mono here if it is in a different location for you.
-ExecStart=/home/swizz/scripts/Radarr/Radarr -nobrowser --data=/home/swizz/config/
+ExecStart=/home/swizz/scripts/Radarr/Radarr -nobrowser --data=/home/swizz/config/Radarr4k
 TimeoutStopSec=20
 KillMode=process
 Restart=on-failure
