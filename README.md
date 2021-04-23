@@ -13,8 +13,6 @@ chmod +x install.sh
 
 sudo /path/to/file/install.sh
 
-I think I fixed the radarr1 not starting issue: but if you're still having trouble:
-
 Sometimes Radarr1 won't start due to another Radarr existing, use the panel to stop Radarr and Radarr4k, enable Radarr and wait a second before starting Radarr4k or
 
 sudo systemctl stop radarr.service && sudo systemctl stop radarr4k.service
