@@ -1,7 +1,6 @@
 [Unit]
 Description=Radarr4k Daemon
-Requires=radarr.service
-After=radarr.service
+After=syslog.target network.target
 
 [Service]
 # Change the user and group variables here.
