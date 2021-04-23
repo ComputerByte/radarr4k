@@ -1,5 +1,5 @@
 # radarr4k
-Second Radarr Installation on Swizzin based systems
+Second Radarr Installation on Swizzin debian based systems
 
 Run install.sh as sudo
 
