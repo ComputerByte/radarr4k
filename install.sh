@@ -1,10 +1,10 @@
 #!/bin/bash
+. /etc/swizzin/sources/globals.sh
+. /etc/swizzin/sources/functions/mono
 . /etc/swizzin/sources/functions/utils
 varname = $(_get_master_username)
 apt_install apt-transport-https dirmngr gnupg ca-certificates curl mediainfo
 echo Updating mono
-. /etc/swizzin/sources/globals.sh
-. /etc/swizzin/sources/functions/mono
 mono_repo_update > /home/$varname/install.log
 echo Making directories
 mkdir /home/$varname/scripts
