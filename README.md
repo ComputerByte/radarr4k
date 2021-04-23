@@ -14,3 +14,5 @@ chmod +x install.sh
 sudo /path/to/file/install.sh
 
 Script will ask for your username, make sure it matches your swizzin username or the script will break.
+
+Sometimes Radarr1 won't start due to another Radarr existing, use the panel to stop Radarr and Radarr4k, enable Radarr and wait a second before starting Radarr4k
