@@ -27,7 +27,6 @@ echo Sleep For 10 seconds
 sleep 10
 echo Stop radarr4k
 systemctl stop radarr4k.service  > /home/$varname/install.log
-systemctl stop radarr.service  > /home/$varname/install.log
 echo Modifying radarr4k configs to not conflict with radarr
 sed -i "s/7878/9000/g" /home/$varname/config/Radarr4k/config.xml  > /home/$varname/install.log
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$varname/config/Radarr4k/config.xml  > /home/$varname/install.log
