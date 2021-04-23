@@ -1,6 +1,7 @@
 #!/bin/bash
 . /etc/swizzin/sources/functions/utils
 varname = $(_get_master_username)
+apt_install apt-transport-https dirmngr gnupg ca-certificates curl mediainfo
 echo Updating mono
 . /etc/swizzin/sources/globals.sh
 . /etc/swizzin/sources/functions/mono
