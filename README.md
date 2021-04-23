@@ -22,3 +22,5 @@ sudo systemctl stop radarr.service && sudo systemctl stop radarr4k.service
 sudo systemctl start radarr.service
 
 sudo systemctl start radarr4k.service
+
+log file should be located at /home/YOURNAME/install.log
