@@ -43,9 +43,17 @@ sleep 10
 echo Starting radarr4k
 systemctl start radarr4k.service  > /home/$varname/install.log
 echo Installing swizzin profile for panel
-cd /home/$varname/scripts
-wget https://raw.githubusercontent.com/ComputerByte/radarr4k/main/profiles.py   > /home/$varname/install.log
-mv /opt/swizzin/core/custom/profiles.py /opt/swizzin/core/custom/profiles.py.backup   > /home/$varname/install.log
-cp profiles.py /opt/swizzin/core/custom   > /home/$varname/install.log
+cd /opt/swizzin/core/custom/
+cat << EOF >> /opt/swizzin/core/custom/profiles.py
+class radarr4k_meta:
+    name = "radarr4k"
+    pretty_name = "Radarr4k"
+    baseurl = "/radarr4k"
+    systemd = "radarr4k"
+    check_theD = True
+    img = "radarr"
+class radarr_meta(radarr_meta):
+    check_theD = True
+EOF
 touch /install/.radarr4k.lock   > /home/$varname/install.log
 systemctl restart panel   > /home/$varname/install.log
