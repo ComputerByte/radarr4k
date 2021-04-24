@@ -21,4 +21,4 @@ sudo systemctl start radarr.service
 
 sudo systemctl start radarr4k.service
 
-log file should be located at /home/YOURNAME/install.log
+log file should be located at /root/log/swizzin.log
