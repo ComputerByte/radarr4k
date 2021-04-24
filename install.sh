@@ -9,15 +9,8 @@ varname=$(_get_master_username)
 echo Updating mono
 apt_install apt-transport-https dirmngr gnupg ca-certificates curl mediainfo
 mono_repo_update >> $log 2>&1
-#Downloading and Unpacking Radarr
+echo Downloading service files & Appending User
 cd /tmp
-echo Downloading Radarr
-wget https://github.com/Radarr/Radarr/releases/download/v3.0.2.4552/Radarr.master.3.0.2.4552.linux-core-x64.tar.gz >> $log 2>&1
-tar -xf Radarr* >> $log 2>&1
-chown -R $varname:$varname /tmp/Radarr >> $log 2>&1
-mv /tmp/Radarr /opt/Radarr4k
-#Downloading Extra Files
-echo Downloading service files
 wget https://raw.githubusercontent.com/ComputerByte/radarr4k/main/radarr4k.service  >> $log 2>&1
 sed -i "s/swizz/$varname/g" /tmp/radarr4k.service  >> $log 2>&1
 wget https://raw.githubusercontent.com/ComputerByte/radarr4k/main/radarr4k.conf  >> $log 2>&1
