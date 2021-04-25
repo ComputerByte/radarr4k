@@ -84,6 +84,7 @@ systemctl start radarr.service >> $log 2>&1
 sed -i "s/7878/9000/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
 echo_progress_done "Done generating config."
+sleep 20
 
 echo_progress_start "Patching panel."
 systemctl start radarr4k.service  >> $log 2>&1
@@ -104,9 +105,4 @@ fi
 touch /install/.radarr4k.lock   >> $log 2>&1
 echo_progress_done "Panel patched."
 systemctl restart panel   >> $log 2>&1
-systemctl stop radarr.service
-systemctl stop radarr4k.service
-systemctl start radarr.service
-sleep 20
-systemctl start radarr4k.service
 echo_progress_done "Done."
