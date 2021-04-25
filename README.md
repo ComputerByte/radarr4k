@@ -9,7 +9,7 @@ Run install.sh as sudo
 sudo su -
 wget "https://raw.githubusercontent.com/ComputerByte/radarr4k/main/install.sh"
 chmod +x ~/install.sh
-~/radarr4k.sh
+~/install.sh
 ```
 Sometimes Radarr1 won't start due to another Radarr existing, use the panel to stop Radarr and Radarr4k, enable Radarr and wait a second before starting Radarr4k or
 
