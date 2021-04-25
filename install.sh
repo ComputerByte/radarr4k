@@ -104,4 +104,9 @@ fi
 touch /install/.radarr4k.lock   >> $log 2>&1
 echo_progress_done "Panel patched."
 systemctl restart panel   >> $log 2>&1
+systemctl stop radarr.service
+systemctl stop radarr4k.service
+systemctl start radarr.service
+sleep 20
+systemctl start radarr4k.service
 echo_progress_done "Done."
