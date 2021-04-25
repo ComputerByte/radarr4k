@@ -7,8 +7,8 @@ Uses existing install as a base. you must ``sudo box install radarr`` prior to r
 Run install.sh as sudo
 ```bash
 sudo su -
-curl -L "https://raw.githubusercontent.com/ComputerByte/radarr4k/main/install.sh" -o "~/radarr4k.sh"
-chmod +x ~/radarr4k.sh
+wget "https://raw.githubusercontent.com/ComputerByte/radarr4k/main/install.sh"
+chmod +x ~/install.sh
 ~/radarr4k.sh
 ```
 Sometimes Radarr1 won't start due to another Radarr existing, use the panel to stop Radarr and Radarr4k, enable Radarr and wait a second before starting Radarr4k or
