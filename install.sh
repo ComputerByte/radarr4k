@@ -1,6 +1,5 @@
 #!/bin/bash
 . /etc/swizzin/sources/globals.sh
-. /etc/swizzin/sources/functions/mono
 . /etc/swizzin/sources/functions/utils
 
 # Script by @ComputerByte 
