@@ -79,6 +79,7 @@ systemctl enable --now radarr4k.service >> $log 2>&1
 sleep 20
 # Stop to change port and append baseurl
 systemctl stop radarr4k.service  >> $log 2>&1
+sleep 20
 systemctl start radarr.service >> $log 2>&1
 sed -i "s/7878/9000/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
