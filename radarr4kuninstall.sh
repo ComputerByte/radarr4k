@@ -1,6 +1,4 @@
 #!/bin/bash
-. /etc/swizzin/sources/globals.sh
-. /etc/swizzin/sources/functions/utils
 
 # Script by @ComputerByte 
 # For Radarr 4K Uninstalls
@@ -8,8 +6,6 @@
 # Log to Swizzin.log
 export log=/root/logs/swizzin.log
 touch $log
-# Set variables
-user=$(_get_master_username)
 
 systemctl disable --now -q radarr4k
 rm /etc/systemd/system/radarr4k.service
