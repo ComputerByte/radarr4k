@@ -14,7 +14,6 @@ user=$(_get_master_username)
 systemctl disable --now -q radarr4k
 rm /etc/systemd/system/radarr4k.service
 systemctl daemon-reload -q
-rm -rf /home/"$user"/.config/radarr4k
 
 if [[ -f /install/.nginx.lock ]]; then
     rm /etc/nginx/apps/radarr4k.conf
