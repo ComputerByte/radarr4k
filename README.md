@@ -23,10 +23,6 @@ The log file should be located at ``/root/log/swizzin.log``.
 
 # Uninstaller: 
 
-WARNING Will remove your radarr4k config folder, so back it up if you need it
-
-Or omit line 17
-
 ```bash
 sudo su -
 wget "https://raw.githubusercontent.com/ComputerByte/radarr4k/main/radarr4kuninstall.sh"
