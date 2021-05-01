@@ -4,7 +4,7 @@ Second Radarr Installation on Swizzin based systems
 
 Uses existing install as a base. you must ``sudo box install radarr`` prior to running this script. 
 
-Run install.sh as sudo
+Run radarr4kinstall.sh as sudo
 ```bash
 sudo su -
 wget "https://raw.githubusercontent.com/ComputerByte/radarr4k/main/radarr4kinstall.sh"
