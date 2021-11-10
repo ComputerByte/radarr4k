@@ -2,7 +2,7 @@
 . /etc/swizzin/sources/globals.sh
 . /etc/swizzin/sources/functions/utils
 
-# Script by @ComputerByte 
+# Script by @ComputerByte
 # For Radarr 4K Installs
 #shellcheck=SC1017
 
@@ -18,7 +18,7 @@ chown -R "$user":"$user" /home/$user/.config
 echo_progress_done "Data Directory created and owned."
 
 echo_progress_start "Installing systemd service file"
-cat > /etc/systemd/system/radarr4k.service <<- SERV 
+cat >/etc/systemd/system/radarr4k.service <<-SERV
 [Unit]
 Description=Radarr 4K
 After=syslog.target network.target
@@ -51,7 +51,7 @@ echo_progress_done "Radarr 4K service installed"
 # This checks if nginx is installed, if it is, then it will install nginx config for radarr4k
 if [[ -f /install/.nginx.lock ]]; then
     echo_progress_start "Installing nginx config"
-    cat > /etc/nginx/apps/radarr4k.conf <<- NGX
+    cat >/etc/nginx/apps/radarr4k.conf <<-NGX
 location /radarr4k {
     proxy_pass        http://127.0.0.1:9000/radarr4k;
     proxy_set_header Host \$proxy_host;
@@ -66,30 +66,30 @@ location /radarr4k {
     proxy_set_header Connection \$http_connection;
 }
 NGX
-# Reload nginx
-systemctl reload nginx
-echo_progress_done "Nginx config applied"
+    # Reload nginx
+    systemctl reload nginx
+    echo_progress_done "Nginx config applied"
 fi
 
 echo_progress_start "Generating configuration"
 # Start radarr to config
-systemctl stop radarr.service >> $log 2>&1
-systemctl enable --now radarr4k.service >> $log 2>&1
+systemctl stop radarr.service >>$log 2>&1
+systemctl enable --now radarr4k.service >>$log 2>&1
 sleep 20
 # Stop to change port and append baseurl
-systemctl stop radarr4k.service  >> $log 2>&1
+systemctl stop radarr4k.service >>$log 2>&1
 sleep 20
-systemctl start radarr.service >> $log 2>&1
-sed -i "s/7878/9000/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
-sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$user/.config/radarr4k/config.xml  >> $log 2>&1
+systemctl start radarr.service >>$log 2>&1
+sed -i "s/7878/9000/g" /home/$user/.config/radarr4k/config.xml >>$log 2>&1
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$user/.config/radarr4k/config.xml >>$log 2>&1
 echo_progress_done "Done generating config."
 sleep 20
 
 echo_progress_start "Patching panel."
-systemctl start radarr4k.service  >> $log 2>&1
+systemctl start radarr4k.service >>$log 2>&1
 #Install Swizzin Panel Profiles
 if [[ -f /install/.panel.lock ]]; then
-    cat << EOF >> /opt/swizzin/core/custom/profiles.py
+    cat <<EOF >>/opt/swizzin/core/custom/profiles.py
 class radarr4k_meta:
     name = "radarr4k"
     pretty_name = "Radarr 4K"
@@ -101,7 +101,7 @@ class radarr_meta(radarr_meta):
     check_theD = True
 EOF
 fi
-touch /install/.radarr4k.lock   >> $log 2>&1
+touch /install/.radarr4k.lock >>$log 2>&1
 echo_progress_done "Panel patched."
-systemctl restart panel   >> $log 2>&1
+systemctl restart panel >>$log 2>&1
 echo_progress_done "Done."
