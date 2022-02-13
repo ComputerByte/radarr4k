@@ -74,17 +74,23 @@ fi
 echo_progress_start "Generating configuration"
 # Start radarr to config
 systemctl stop radarr.service >>$log 2>&1
+cat > /home/${user}/.config/sonarr4k/config.xml << EOSC
+<Config>
+  <LogLevel>info</LogLevel>
+  <EnableSsl>False</EnableSsl>
+  <Port>9000</Port>
+  <SslPort>9898</SslPort>
+  <UrlBase>/radarr4k</UrlBase>
+  <BindAddress>127.0.0.1</BindAddress>
+  <AuthenticationMethod>None</AuthenticationMethod>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
+  <Branch>main</Branch>
+</Config>
+EOSC
+chown -R ${user}:${user}/home/${user}/.config/radarr4k/config.xml
+systemctl enable --now radarr.service >>$log 2>&1
+sleep 20
 systemctl enable --now radarr4k.service >>$log 2>&1
-sleep 20
-# Stop to change port and append baseurl
-systemctl stop radarr4k.service >>$log 2>&1
-sleep 20
-systemctl start radarr.service >>$log 2>&1
-sed -i "s/7878/9000/g" /home/$user/.config/radarr4k/config.xml >>$log 2>&1
-sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr4k<\/UrlBase>/g" /home/$user/.config/radarr4k/config.xml >>$log 2>&1
-sed -i "s/\*/127.0.0.1/g" /home/$user/.config/radarr4k/config.xml
-echo_progress_done "Done generating config."
-sleep 20
 
 echo_progress_start "Patching panel."
 systemctl start radarr4k.service >>$log 2>&1
