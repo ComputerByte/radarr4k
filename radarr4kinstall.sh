@@ -66,8 +66,8 @@ location /radarr4k {
   proxy_set_header Connection \$http_connection;
 }
 
-location  /radarr/api {
-  proxy_pass        http://127.0.0.1:9000/radarr/api;
+location  /radarr4k/api {
+  proxy_pass        http://127.0.0.1:9000/radarr4k/api;
   proxy_set_header Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Host \$host;
@@ -87,7 +87,7 @@ fi
 echo_progress_start "Generating configuration"
 # Start radarr to config
 systemctl stop radarr.service >>$log 2>&1
-cat > /home/${user}/.config/sonarr4k/config.xml << EOSC
+cat > /home/${user}/.config/radarr4k/config.xml << EOSC
 <Config>
   <LogLevel>info</LogLevel>
   <EnableSsl>False</EnableSsl>
@@ -100,7 +100,7 @@ cat > /home/${user}/.config/sonarr4k/config.xml << EOSC
   <Branch>main</Branch>
 </Config>
 EOSC
-chown -R ${user}:${user}/home/${user}/.config/radarr4k/config.xml
+chown -R ${user}:${user} /home/${user}/.config/radarr4k/config.xml
 systemctl enable --now radarr.service >>$log 2>&1
 sleep 20
 systemctl enable --now radarr4k.service >>$log 2>&1
