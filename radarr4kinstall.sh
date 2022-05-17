@@ -14,7 +14,7 @@ user=$(_get_master_username)
 
 echo_progress_start "Making data directory and owning it to ${user}"
 mkdir -p "/home/$user/.config/radarr4k"
-chown -R "$user":"$user" /home/$user/.config
+chown -R "$user":"$user" /home/$user/.config/radarr4k
 echo_progress_done "Data Directory created and owned."
 
 echo_progress_start "Installing systemd service file"
