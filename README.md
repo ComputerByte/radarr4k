@@ -4,6 +4,8 @@ Second Radarr Installation on Swizzin based systems
 
 Uses existing install as a base. you must ``sudo box install radarr`` prior to running this script. 
 
+Config assumes NGINX is installed, if you dont have it installed, you'll have to enable auth in radarr4k yourself.
+
 Run radarr4kinstall.sh as sudo
 ```bash
 sudo su -

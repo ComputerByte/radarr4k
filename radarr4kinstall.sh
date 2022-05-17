@@ -53,21 +53,20 @@ if [[ -f /install/.nginx.lock ]]; then
     echo_progress_start "Installing nginx config"
     cat >/etc/nginx/apps/radarr4k.conf <<-NGX
 location /radarr4k {
-  proxy_pass        http://127.0.0.1:9000/radarr4k;
+  proxy_pass        http://127.0.0.1:3675/radarr4k;
   proxy_set_header Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Host \$host;
   proxy_set_header X-Forwarded-Proto \$scheme;
   proxy_redirect off;
   auth_basic "What's the password?";
-  auth_basic_user_file /etc/htpasswd.d/htpasswd.${user};
-
+  auth_basic_user_file /etc/htpasswd.d/htpasswd.${master};
   proxy_http_version 1.1;
   proxy_set_header Upgrade \$http_upgrade;
   proxy_set_header Connection \$http_connection;
 }
-
 location  /radarr4k/api {
-  proxy_pass        http://127.0.0.1:9000/radarr4k/api;
+  proxy_pass        http://127.0.0.1:3675/radarr4k/api;
   proxy_set_header Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Host \$host;
@@ -85,24 +84,16 @@ NGX
 fi
 
 echo_progress_start "Generating configuration"
-# Start radarr to config
-systemctl stop radarr.service >>$log 2>&1
 cat > /home/${user}/.config/radarr4k/config.xml << EOSC
 <Config>
-  <LogLevel>info</LogLevel>
-  <EnableSsl>False</EnableSsl>
-  <Port>9000</Port>
-  <SslPort>9898</SslPort>
+  <Port>3675</Port>
+  <SslPort>3765</SslPort>
   <UrlBase>/radarr4k</UrlBase>
   <BindAddress>127.0.0.1</BindAddress>
-  <AuthenticationMethod>None</AuthenticationMethod>
-  <UpdateMechanism>BuiltIn</UpdateMechanism>
-  <Branch>main</Branch>
+  <UpdateMechanism>none</UpdateMechanism>
 </Config>
 EOSC
 chown -R ${user}:${user} /home/${user}/.config/radarr4k/config.xml
-systemctl enable --now radarr.service >>$log 2>&1
-sleep 20
 systemctl enable --now radarr4k.service >>$log 2>&1
 
 echo_progress_start "Patching panel."
