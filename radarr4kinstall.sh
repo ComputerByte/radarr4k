@@ -14,7 +14,7 @@ user=$(_get_master_username)
 
 echo_progress_start "Making data directory and owning it to ${user}"
 mkdir -p "/home/$user/.config/radarr4k"
-chown -R "$user":"$user" /home/$user/.config/radarr4k
+chown -R "$user":"$user" \/home/$user/.config/radarr4k
 echo_progress_done "Data Directory created and owned."
 
 echo_progress_start "Installing systemd service file"
@@ -52,30 +52,23 @@ echo_progress_done "Radarr 4K service installed"
 if [[ -f /install/.nginx.lock ]]; then
     echo_progress_start "Installing nginx config"
     cat >/etc/nginx/apps/radarr4k.conf <<-NGX
-location /radarr4k {
-  proxy_pass        http://127.0.0.1:3675/radarr4k;
-  proxy_set_header Host \$host;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Host \$host;
-  proxy_set_header X-Forwarded-Proto \$scheme;
-  proxy_redirect off;
-  auth_basic "What's the password?";
-  auth_basic_user_file /etc/htpasswd.d/htpasswd.${master};
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade \$http_upgrade;
-  proxy_set_header Connection \$http_connection;
+location ^~ /radarr4k {
+    proxy_pass http://127.0.0.1:9000;
+    proxy_set_header Host \$proxy_host;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host \$host;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection \$http_connection;
+    auth_basic "What's the password?";
+    auth_basic_user_file /etc/htpasswd.d/htpasswd.${user};
 }
-location  /radarr4k/api {
-  proxy_pass        http://127.0.0.1:3675/radarr4k/api;
-  proxy_set_header Host \$host;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Host \$host;
-  proxy_set_header X-Forwarded-Proto \$scheme;
-  proxy_redirect off;
-  auth_basic off;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade \$http_upgrade;
-  proxy_set_header Connection \$http_connection;
+# Allow the API External Access via NGINX
+location ^~ /radarr4k/api {
+    auth_basic off;
+    proxy_pass http://127.0.0.1:9000;
 }
 NGX
     # Reload nginx
@@ -84,16 +77,30 @@ NGX
 fi
 
 echo_progress_start "Generating configuration"
+
+# Start radarr to config
+systemctl stop radarr.service >>$log 2>&1
+
+
 cat > /home/${user}/.config/radarr4k/config.xml << EOSC
 <Config>
-  <Port>3675</Port>
-  <SslPort>3765</SslPort>
-  <UrlBase>/radarr4k</UrlBase>
+  <LogLevel>info</LogLevel>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
+  <Branch>master</Branch>
   <BindAddress>127.0.0.1</BindAddress>
-  <UpdateMechanism>none</UpdateMechanism>
+  <Port>9000</Port>
+  <SslPort>6969</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <LaunchBrowser>False</LaunchBrowser>
+  <AuthenticationMethod>None</AuthenticationMethod>
+  <UrlBase>radarr4k</UrlBase>
+  <UpdateAutomatically>False</UpdateAutomatically>
 </Config>
 EOSC
-chown -R ${user}:${user} /home/${user}/.config/radarr4k/config.xml
+
+chown -R ${user}:${user} \/home/${user}/.config/radarr4k/config.xml
+systemctl enable --now radarr.service >>$log 2>&1
+sleep 10
 systemctl enable --now radarr4k.service >>$log 2>&1
 
 echo_progress_start "Patching panel."
@@ -106,10 +113,11 @@ class radarr4k_meta:
     pretty_name = "Radarr 4K"
     baseurl = "/radarr4k"
     systemd = "radarr4k"
-    check_theD = True
+    check_theD = False
     img = "radarr"
 class radarr_meta(radarr_meta):
-    check_theD = True
+    systemd = "radarr"
+    check_theD = False
 EOF
 fi
 touch /install/.radarr4k.lock >>$log 2>&1
