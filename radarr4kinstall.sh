@@ -14,7 +14,7 @@ user=$(_get_master_username)
 
 echo_progress_start "Making data directory and owning it to ${user}"
 mkdir -p "/home/$user/.config/radarr4k"
-chown -R "$user":"$user" \/home/$user/.config/radarr4k
+chown -R "$user":"$user" /home/$user/.config/radarr4k
 echo_progress_done "Data Directory created and owned."
 
 echo_progress_start "Installing systemd service file"
@@ -53,7 +53,7 @@ if [[ -f /install/.nginx.lock ]]; then
     echo_progress_start "Installing nginx config"
     cat >/etc/nginx/apps/radarr4k.conf <<-NGX
 location ^~ /radarr4k {
-    proxy_pass http://127.0.0.1:9000;
+    proxy_pass http://127.0.0.1:3675;
     proxy_set_header Host \$proxy_host;
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host \$host;
@@ -68,7 +68,7 @@ location ^~ /radarr4k {
 # Allow the API External Access via NGINX
 location ^~ /radarr4k/api {
     auth_basic off;
-    proxy_pass http://127.0.0.1:9000;
+    proxy_pass http://127.0.0.1:3675;
 }
 NGX
     # Reload nginx
@@ -88,7 +88,7 @@ cat > /home/${user}/.config/radarr4k/config.xml << EOSC
   <UpdateMechanism>BuiltIn</UpdateMechanism>
   <Branch>master</Branch>
   <BindAddress>127.0.0.1</BindAddress>
-  <Port>9000</Port>
+  <Port>3675</Port>
   <SslPort>6969</SslPort>
   <EnableSsl>False</EnableSsl>
   <LaunchBrowser>False</LaunchBrowser>
@@ -98,7 +98,7 @@ cat > /home/${user}/.config/radarr4k/config.xml << EOSC
 </Config>
 EOSC
 
-chown -R ${user}:${user} \/home/${user}/.config/radarr4k/config.xml
+chown -R ${user}:${user} /home/${user}/.config/radarr4k/config.xml
 systemctl enable --now radarr.service >>$log 2>&1
 sleep 10
 systemctl enable --now radarr4k.service >>$log 2>&1
