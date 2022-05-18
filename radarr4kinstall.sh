@@ -54,7 +54,7 @@ if [[ -f /install/.nginx.lock ]]; then
     cat >/etc/nginx/apps/radarr4k.conf <<-NGX
 location ^~ /radarr4k {
     proxy_pass http://127.0.0.1:3675;
-    proxy_set_header Host \$proxy_host;
+    proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Host \$host;
     proxy_set_header X-Forwarded-Proto \$scheme;
