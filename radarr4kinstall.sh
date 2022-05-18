@@ -53,22 +53,22 @@ if [[ -f /install/.nginx.lock ]]; then
     echo_progress_start "Installing nginx config"
     cat >/etc/nginx/apps/radarr4k.conf <<-NGX
 location ^~ /radarr4k {
-    proxy_pass http://127.0.0.1:3675;
+    proxy_pass http://127.0.0.1:7888/radarr4k;
     proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Host \$host;
-    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
     proxy_redirect off;
     proxy_http_version 1.1;
-    proxy_set_header Upgrade \$http_upgrade;
-    proxy_set_header Connection \$http_connection;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
     auth_basic "What's the password?";
     auth_basic_user_file /etc/htpasswd.d/htpasswd.${user};
 }
 # Allow the API External Access via NGINX
 location ^~ /radarr4k/api {
     auth_basic off;
-    proxy_pass http://127.0.0.1:3675;
+    proxy_pass http://127.0.0.1:7888;
 }
 NGX
     # Reload nginx
@@ -88,7 +88,7 @@ cat > /home/${user}/.config/radarr4k/config.xml << EOSC
   <UpdateMechanism>BuiltIn</UpdateMechanism>
   <Branch>master</Branch>
   <BindAddress>127.0.0.1</BindAddress>
-  <Port>3675</Port>
+  <Port>7888</Port>
   <SslPort>6969</SslPort>
   <EnableSsl>False</EnableSsl>
   <LaunchBrowser>False</LaunchBrowser>
